@@ -1,5 +1,6 @@
 import React,{useState, useRef } from 'react';
 import {StyleSheet,Text, TextInput,View,Image, Button, TouchableHighlight } from 'react-native';
+import ImageButton from './ui/ImageButton';
 import NavButtonsControl from './NavButtonsControl';
 
 const rightArrow = require('../assets/right-arrow.png');
@@ -33,25 +34,6 @@ const IPControl = () =>{
 
     );
 };
-
-
-/* 
-    ImageButton 
-*/
-const ImageButton = (props) =>{
-    let image = props.image;
-    let clickHandler = props.clickHandler;
-    return (
-        <>
-        <TouchableHighlight style={styles.imageButtonStyle} onPress={clickHandler}>
-            <Image source={image} style={styles.controllerButton} />
-        </TouchableHighlight>
-    </>
-    );
-};
-
-
-
 
 
 /*
@@ -90,10 +72,6 @@ const styles = StyleSheet.create({
     buttonArrayRow:{
         flexDirection:'row',
         justifyContent:'center',
-    },
-    controllerButton:{
-        width:50,
-        height:50,
     },
     ipControlContainer:{
         flexDirection:'row',
