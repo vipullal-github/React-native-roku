@@ -1,7 +1,14 @@
 import React,{useState, useRef } from 'react';
 import {StyleSheet,Text, TextInput,View,Image, Button, TouchableHighlight } from 'react-native';
-import { isRequired } from 'react-native/Libraries/DeprecatedPropTypes/DeprecatedColorPropType';
+import NavButtonsControl from './NavButtonsControl';
 
+const rightArrow = require('../assets/right-arrow.png');
+const leftArrow = require('../assets/left-arrow.png');
+const upArrow = require('../assets/up-arrow.png');
+const downArrow = require('../assets/down-arrow.png');
+const home = require('../assets/home.png');
+
+/* IPControl */
 const IPControl = () =>{
 
     const [ipText, setIP ] = useState('192.168.10.100');
@@ -12,8 +19,10 @@ const IPControl = () =>{
     };
 
     return(
-
-        <View style={styles.editViewContainer}>
+        // ipControlContainer: flexDirection:'row', flex:1,
+        // inputViewWrapper: width: 60%
+        // inputStyle
+        <View style={styles.ipControlContainer}>
             <View style={styles.inputViewWrapper}>
                 <TextInput style={styles.inputStyle} value={ipText} onChangeText={setIP} placeholder={'Enter IP address of the ROKU here'} ref={inputRef} />
             </View>
@@ -26,35 +35,50 @@ const IPControl = () =>{
 };
 
 
+/* 
+    ImageButton 
+*/
 const ImageButton = (props) =>{
-    let [imageName, clickHandler] = props;
-    console.log("Rendering ImageButton");
-    let image = require( '../assets/left-arrow.png' );
+    let image = props.image;
+    let clickHandler = props.clickHandler;
     return (
         <>
         <TouchableHighlight style={styles.imageButtonStyle} onPress={clickHandler}>
-            <Image source={require( '../assets/left-arrow.png' )} style={styles.controllerButton} />
+            <Image source={image} style={styles.controllerButton} />
         </TouchableHighlight>
     </>
     );
 };
 
+
+
+
+
+/*
+    MainController
+*/
 const MainController = (props) =>{
 
     const onPress = (event) =>{
-
+        event.preventDefault();
+        console.log("Some button was pressed!");
     };
 
     return (
-        <>
+        // buttonArrayRow: flexDirection:row, justifyContent:center
+        <View style={styles.container}>
             <IPControl />
             <Text>Hello, world!</Text>
-            <View stule={styles.buttonArrayRow}>
-                <TouchableHighlight style={styles.imageButtonStyle} onPress={onPress}>
-                    <Image source={require( '../assets/left-arrow.png' )} style={styles.controllerButton} />
-                </TouchableHighlight>
+            <NavButtonsControl />
+            <View style={styles.buttonArrayRow}>
+                <ImageButton image={leftArrow} clickHandler={onPress} />
+                <View style={styles.buttonArrayRow}>
+                <ImageButton image={rightArrow} clickHandler={onPress} />
+                <ImageButton image={upArrow} clickHandler={onPress} />
+                </View>
+                <ImageButton image={downArrow} clickHandler={onPress} />
             </View>
-        </>
+        </View>
     )
 };
 
@@ -64,16 +88,16 @@ const styles = StyleSheet.create({
         flexDirection:'column',
     },
     buttonArrayRow:{
-        flex:1,
         flexDirection:'row',
+        justifyContent:'center',
     },
     controllerButton:{
         width:50,
         height:50,
-        backgroundColor:'red',
     },
-    editViewContainer:{
-        flexDirection:'row'
+    ipControlContainer:{
+        flexDirection:'row',
+        padding:10,
     },
     inputViewWrapper:{
         flex: 1,
