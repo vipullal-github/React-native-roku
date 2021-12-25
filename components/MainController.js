@@ -1,5 +1,6 @@
 import React,{useState, useRef } from 'react';
 import {StyleSheet,Text, TextInput,View,Image, Button, TouchableHighlight } from 'react-native';
+import { isRequired } from 'react-native/Libraries/DeprecatedPropTypes/DeprecatedColorPropType';
 
 const IPControl = () =>{
 
@@ -27,11 +28,14 @@ const IPControl = () =>{
 
 const ImageButton = (props) =>{
     let [imageName, clickHandler] = props;
+    console.log("Rendering ImageButton");
     let image = require( '../assets/left-arrow.png' );
     return (
-    <TouchableHighlight style={styles.imageButtonStyle} onPress={clickHandler}>
-        <Image source={require( '../assets/left-arrow.png' )} style={styles.controllerButton} />
-    </TouchableHighlight>
+        <>
+        <TouchableHighlight style={styles.imageButtonStyle} onPress={clickHandler}>
+            <Image source={require( '../assets/left-arrow.png' )} style={styles.controllerButton} />
+        </TouchableHighlight>
+    </>
     );
 };
 
@@ -46,7 +50,9 @@ const MainController = (props) =>{
             <IPControl />
             <Text>Hello, world!</Text>
             <View stule={styles.buttonArrayRow}>
-                <ImageButton imageName="../assets/right-arrow.png" clickHandler={onPress} />
+                <TouchableHighlight style={styles.imageButtonStyle} onPress={onPress}>
+                    <Image source={require( '../assets/left-arrow.png' )} style={styles.controllerButton} />
+                </TouchableHighlight>
             </View>
         </>
     )
@@ -86,6 +92,7 @@ const styles = StyleSheet.create({
         alignSelf:'right',
     },
     imageButtonStyle:{
+        flex:1,
 
     }
 });
