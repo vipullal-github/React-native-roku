@@ -11,17 +11,21 @@ import type {Node} from 'react';
 
 import {SafeAreaView,StatusBar,StyleSheet} from 'react-native';
 import MainController from './components/MainController';
+import FakeAppBar from './components/FakeAppBar';
 
 
 const App: () => Node = () => {
 
   const backgroundStyle = {
-    backgroundColor: 'green',
+      flex:1,
+      flexDirection:'column',
+      margin:10,
   };
 
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar barStyle={'light-content'} />
+      <FakeAppBar title='Roku Controller'/>
       <MainController />
     </SafeAreaView>
   );
