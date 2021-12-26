@@ -13,7 +13,7 @@ import {SafeAreaView,StatusBar,StyleSheet} from 'react-native';
 import MainController from './components/MainController';
 import FakeAppBar from './components/FakeAppBar';
 import { RokuContextProvider } from './contexts/RokuContext';
-import HelloWorldComponent from './components/HelloWorld';
+//import HelloWorldComponent from './components/HelloWorld';
 
 
 const App: () => Node = () => {
@@ -23,8 +23,6 @@ const App: () => Node = () => {
       flexDirection:'column',
       margin:10,
   };
-      //<RokuContextProvider>
-      //</RokuContextProvider>
 
   return (
     <SafeAreaView style={backgroundStyle}>

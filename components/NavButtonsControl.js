@@ -1,6 +1,7 @@
-import React from 'react';
+import React,{useContext} from 'react';
 import {View,StyleSheet} from 'react-native';
 import ImageButton from './ui/ImageButton';
+import RokuContext from '../contexts/RokuContext';
 
 const rightArrow = require('../assets/right-arrow.png');
 const leftArrow = require('../assets/left-arrow.png');
@@ -12,22 +13,25 @@ const ok_btn = require('../assets/ok_btn.png');
 
 const NavButtonsControl = (props) =>{
 
-    const onPress = (event)=>{
-        console.log('Some button was pressed!!');
+    const rokuContext = useContext( RokuContext );
+
+    const onPress = (event, key)=>{
+        event.preventDefault();
+        rokuContext.onSendKey( key );
     };
 
     return (
         <View style={styles.container}>
             <View style={styles.navButtonRow}>
-                <ImageButton image={upArrow} clickHandler={onPress} />
+                <ImageButton image={upArrow} clickHandler={ (e) => onPress(e,'up')} />
             </View>
             <View style={styles.navButtonRow}>
-                <ImageButton image={leftArrow} clickHandler={onPress} />
-                <ImageButton image={ok_btn} />
-                <ImageButton image={rightArrow} clickHandler={onPress} />
+                <ImageButton image={leftArrow} clickHandler={(e) => onPress(e,'left')} />
+                <ImageButton image={ok_btn} clickHandler={(e) => onPress(e,'enter')}/>
+                <ImageButton image={rightArrow} clickHandler={(e) => onPress(e,'right')} />
             </View>
             <View style={styles.navButtonRow}>
-                <ImageButton image={downArrow} clickHandler={onPress} />
+                <ImageButton image={downArrow} clickHandler={(e) => onPress(e,'down')} />
             </View>
         </View>
     );

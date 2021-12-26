@@ -3,12 +3,6 @@ import {StyleSheet,Text, TextInput,View,Image, Button, TouchableHighlight } from
 import ImageButton from './ui/ImageButton';
 import NavButtonsControl from './NavButtonsControl';
 
-const rightArrow = require('../assets/right-arrow.png');
-const leftArrow = require('../assets/left-arrow.png');
-const upArrow = require('../assets/up-arrow.png');
-const downArrow = require('../assets/down-arrow.png');
-const home = require('../assets/home.png');
-
 /* IPControl */
 const IPControl = () =>{
 
@@ -20,9 +14,6 @@ const IPControl = () =>{
     };
 
     return(
-        // ipControlContainer: flexDirection:'row', flex:1,
-        // inputViewWrapper: width: 60%
-        // inputStyle
         <View style={styles.ipControlContainer}>
             <View style={styles.inputViewWrapper}>
                 <TextInput style={styles.inputStyle} value={ipText} onChangeText={setIP} placeholder={'Enter IP address of the ROKU here'} ref={inputRef} />
@@ -52,14 +43,6 @@ const MainController = (props) =>{
             <IPControl />
             <Text>Hello, world!</Text>
             <NavButtonsControl />
-            {/* <View style={styles.buttonArrayRow}>
-                <ImageButton image={leftArrow} clickHandler={onPress} />
-                <View style={styles.buttonArrayRow}>
-                <ImageButton image={rightArrow} clickHandler={onPress} />
-                <ImageButton image={upArrow} clickHandler={onPress} />
-                </View>
-                <ImageButton image={downArrow} clickHandler={onPress} />
-            </View> */}
         </View>
     )
 };

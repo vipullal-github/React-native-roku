@@ -1,6 +1,8 @@
 import React, {createContext, useReducer} from 'react';
 
 
+const validKeyNames = ['home','up','down','left','right','back','enter']; 
+
 // default context data
 const defaultState = {
     ip:'192.168.10.120',
@@ -22,9 +24,11 @@ const SET_IP = "SET_IP";
 // ------------------------------------------
 
 const createSendKeyAction = (key)=>{
+    // sanity check the keyname
+    let idx = validKeyNames.find( k => k === key);
     return {
         action:SEND_KEY,
-        payload:key,
+        payload:idx,
     };
 };
 
@@ -44,6 +48,8 @@ const doSetIP = (state,action) => {
 };
 
 const doSendKey = (state,action) => {
+    console.log(`Sending key ${action.payload}`);
+    console.log('doSendKey::state is %o', state );
     return state;
 };
 
@@ -68,9 +74,12 @@ const rokuContextReducer = (state, action) => {
 export const RokuContextProvider = (props)=>{
     const [state, dispatcher ] = useReducer( rokuContextReducer, defaultState );
 
+    console.log('RokuContextProvider::State is %o', state );
+
     const rokuContext = {
-        ip:state.ip,
-        port:state.port,
+        ip: (state || defaultState).ip,
+        port: (state|| defaultState).port,
+        keyNames: validKeyNames,
         onIPChanged: (newIP) => { dispatcher( createSetIPAction(newIP));},
         onSendKey: (key) => { dispatcher( createSendKeyAction(key));},
     };

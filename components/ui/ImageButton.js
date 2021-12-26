@@ -7,7 +7,7 @@ const ImageButton = (props) =>{
     let clickHandler = props.clickHandler;
     return (
         <>
-        <TouchableHighlight style={styles.imageButtonStyle} onPress={clickHandler}>
+        <TouchableHighlight style={styles.imageButtonStyle} onPress={(e)=>clickHandler(e)} >
             <Image source={image} style={styles.controllerButton} />
         </TouchableHighlight>
     </>
