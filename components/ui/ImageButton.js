@@ -18,7 +18,7 @@ const ImageButton = (props) =>{
 const styles = StyleSheet.create({
 
     imageButtonStyle:{
-        flex:1,
+        backgroundColor:'pink',
     },
     controllerButton:{
         width:50,

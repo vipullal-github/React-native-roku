@@ -52,14 +52,14 @@ const MainController = (props) =>{
             <IPControl />
             <Text>Hello, world!</Text>
             <NavButtonsControl />
-            <View style={styles.buttonArrayRow}>
+            {/* <View style={styles.buttonArrayRow}>
                 <ImageButton image={leftArrow} clickHandler={onPress} />
                 <View style={styles.buttonArrayRow}>
                 <ImageButton image={rightArrow} clickHandler={onPress} />
                 <ImageButton image={upArrow} clickHandler={onPress} />
                 </View>
                 <ImageButton image={downArrow} clickHandler={onPress} />
-            </View>
+            </View> */}
         </View>
     )
 };

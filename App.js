@@ -12,6 +12,8 @@ import type {Node} from 'react';
 import {SafeAreaView,StatusBar,StyleSheet} from 'react-native';
 import MainController from './components/MainController';
 import FakeAppBar from './components/FakeAppBar';
+import { RokuContextProvider } from './contexts/RokuContext';
+import HelloWorldComponent from './components/HelloWorld';
 
 
 const App: () => Node = () => {
@@ -21,12 +23,16 @@ const App: () => Node = () => {
       flexDirection:'column',
       margin:10,
   };
+      //<RokuContextProvider>
+      //</RokuContextProvider>
 
   return (
     <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={'light-content'} />
-      <FakeAppBar title='Roku Controller'/>
-      <MainController />
+    <StatusBar barStyle={'light-content'} />
+    <RokuContextProvider>
+        <FakeAppBar title='Roku Controller'/>
+        <MainController />
+        </RokuContextProvider>
     </SafeAreaView>
   );
 };
