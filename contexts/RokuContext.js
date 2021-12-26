@@ -5,7 +5,7 @@ const validKeyNames = ['home','up','down','left','right','back','enter'];
 
 // default context data
 const defaultState = {
-    ip:'192.168.10.120',
+    ip:'192.168.10.117',
     port: 8060,
 };
 
@@ -44,7 +44,12 @@ const createSetIPAction = (ip)=>{
 //      actions
 // ----------------------------------------------
 const doSetIP = (state,action) => {
-    return state;
+    // TODO: Add validation here!
+    const newState = {
+        ...state,
+        ip:action.payload
+    }
+    return newState;
 };
 
 const doSendKey = (state,action) => {

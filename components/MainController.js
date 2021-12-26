@@ -1,16 +1,20 @@
-import React,{useState, useRef } from 'react';
+import React,{useState, useRef, useContext } from 'react';
 import {StyleSheet,Text, TextInput,View,Image, Button, TouchableHighlight } from 'react-native';
-import ImageButton from './ui/ImageButton';
 import NavButtonsControl from './NavButtonsControl';
+
+import RokuContext from '../contexts/RokuContext';
 
 /* IPControl */
 const IPControl = () =>{
 
+    const rokuContext = useContext(RokuContext);
+
     const [ipText, setIP ] = useState('192.168.10.100');
     let inputRef = useRef();
 
-    const onButtonClicked = () =>{
-
+    const onSetButtonClicked = () =>{
+        console.log('Calling onIPChanged with ip = ', ipText );
+        rokuContext.onIPChanged(ipText);
     };
 
     return(
@@ -19,7 +23,7 @@ const IPControl = () =>{
                 <TextInput style={styles.inputStyle} value={ipText} onChangeText={setIP} placeholder={'Enter IP address of the ROKU here'} ref={inputRef} />
             </View>
         <View style={{paddingLeft:10}}></View>
-        <Button style={styles.okBtnStyle} title="Set" onPress={onButtonClicked} />
+        <Button style={styles.okBtnStyle} title="Set" onPress={onSetButtonClicked} />
         <View style={{paddingLeft:5}}></View>
     </View>
 
