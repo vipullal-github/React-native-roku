@@ -9,7 +9,7 @@ const IPControl = () =>{
 
     const rokuContext = useContext(RokuContext);
 
-    const [ipText, setIP ] = useState('192.168.10.100');
+    const [ipText, setIP ] = useState(rokuContext.ip );
     let inputRef = useRef();
 
     const onSetButtonClicked = () =>{
@@ -36,16 +36,11 @@ const IPControl = () =>{
 */
 const MainController = (props) =>{
 
-    const onPress = (event) =>{
-        event.preventDefault();
-        console.log("Some button was pressed!");
-    };
 
     return (
         // buttonArrayRow: flexDirection:row, justifyContent:center
         <View style={styles.container}>
             <IPControl />
-            <Text>Hello, world!</Text>
             <NavButtonsControl />
         </View>
     )
@@ -63,6 +58,8 @@ const styles = StyleSheet.create({
     ipControlContainer:{
         flexDirection:'row',
         padding:10,
+        backgroundColor:'lightgreen',
+        marginTop:10,
     },
     inputViewWrapper:{
         flex: 1,
