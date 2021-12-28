@@ -7,6 +7,9 @@ const validKeyNames = ['Home','Up','Down','Left','Right','Back','Enter','Rev', '
 const defaultState = {
     ip:'192.168.10.117',
     port: 8060,
+    connectionChecked: false,
+    isKeyDown:false,
+    currentKeyPressed: undefined,
     onIPChanged:() =>{},
     onSendKey:()=>{},
 };
@@ -51,7 +54,7 @@ const doSetIP = (state,action) => {
         ...state,
         ip:action.payload,
     }
-    console.log("doSetIP: returning state: %o", newState);
+    console.log('doSetIP: returning state: %o', newState);
     return newState;
 };
 
@@ -67,16 +70,15 @@ const doSendKey = (state,action) => {
 // ------------------------------------------------
 const rokuContextReducer = (state = defaultState, action) => {
     let act = action.action;
-    console.log('rokuContxtReducer: state is %o', state );
+    //console.log('rokuContxtReducer: state is %o', state );
     if( act === SET_IP ){
-        doSetIP( state, action );
+        return doSetIP( state, action );
     }
     else if( act === SEND_KEY ){
-        doSendKey( state, action);
+        return doSendKey( state, action);
     }
-    else{
-        return state;
-    }
+    console.log('rokuContextReducer called with unknown action!');
+    return defaultState;
 };
 
 
@@ -86,8 +88,11 @@ export const RokuContextProvider = (props)=>{
     //console.log('RokuContextProvider::State is %o', state );
 
     const rokuContext = {
-        ip: (state || defaultState).ip,
-        port: (state|| defaultState).port,
+        ip: state.ip,
+        port: state.port,
+        connectionChecked:state.connectionChecked,
+        isKeyDown:false,
+        currentKeyPressed: undefined,
         keyNames: validKeyNames,
         onIPChanged: (newIP) => { dispatcher( createSetIPAction(newIP));},
         onSendKey: (key) => { dispatcher( createSendKeyAction(key));},
