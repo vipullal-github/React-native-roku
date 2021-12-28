@@ -1,4 +1,4 @@
-import React, {createContext, useReducer} from 'react';
+import React, {createContext, useReducer, useEffect, useSelector } from 'react';
 
 
 const validKeyNames = ['Home','Up','Down','Left','Right','Back','Enter','Rev', 'Fwd','Play'];
@@ -22,6 +22,7 @@ const RokuContext = createContext( defaultState );
 
 const SEND_KEY = 'SEND_KEY';
 const SET_IP = 'SET_IP';
+const SET_CONNECTED_STATUS = 'SET_STATUS';
 
 
 // -----------------------------------------
@@ -44,6 +45,13 @@ const createSetIPAction = (ip)=>{
     };
 };
 
+const createUpdateStatusAction = (x)=>{
+    return {
+        action: SET_CONNECTED_STATUS,
+        payload: x,
+    };
+};
+
 
 // ----------------------------------------------
 //      actions
@@ -53,6 +61,7 @@ const doSetIP = (state,action) => {
     const newState = {
         ...state,
         ip:action.payload,
+        connectionChecked:false,
     }
     console.log('doSetIP: returning state: %o', newState);
     return newState;
@@ -63,6 +72,14 @@ const doSendKey = (state,action) => {
     console.log('doSendKey::state is %o', state );
     return state;
 };
+
+const doUpdateConnectedStatus = ( state, action )=>{
+
+    return {
+        ...state,
+        connectionChecked:action.payload,
+    }
+}
 
 
 // ------------------------------------------------
@@ -77,16 +94,38 @@ const rokuContextReducer = (state = defaultState, action) => {
     else if( act === SEND_KEY ){
         return doSendKey( state, action);
     }
+    else if( act === SET_CONNECTED_STATUS ){
+        return doUpdateConnectedStatus( state, action);
+    }
     console.log('rokuContextReducer called with unknown action!');
     return defaultState;
 };
 
 
+// -----------------------------------------------------
+//      RokuContextProvider
+// ----------------------------------------------------
 export const RokuContextProvider = (props)=>{
     const [state, dispatcher ] = useReducer( rokuContextReducer, defaultState );
 
-    //console.log('RokuContextProvider::State is %o', state );
 
+    const checkForIPChange = ( o ) => {
+        return o.checkRokuStatus;
+    };
+
+    const checkRokuStatus = async()=>{
+        console.log('RokuContextProvider.checkRokuStatus function called. Checking for roku at ' + state.ip );
+    };
+
+    //console.log('RokuContextProvider::State is %o', state );
+    useEffect(()=>{
+        console.log('RokuContextProvider.effect function called');
+        setTimeout( ()=>{
+            dispatcher( createUpdateStatusAction(true));
+        }, 1000);
+    },[state.connectionChecked]);
+
+    
     const rokuContext = {
         ip: state.ip,
         port: state.port,
@@ -94,6 +133,7 @@ export const RokuContextProvider = (props)=>{
         isKeyDown:false,
         currentKeyPressed: undefined,
         keyNames: validKeyNames,
+        updateRokuConnectionStatus: (x) => { dispatcher( createUpdateStatusAction(x))},
         onIPChanged: (newIP) => { dispatcher( createSetIPAction(newIP));},
         onSendKey: (key) => { dispatcher( createSendKeyAction(key));},
     };
