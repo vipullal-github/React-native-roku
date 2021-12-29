@@ -5,16 +5,14 @@ import NavButtonsControl from './NavButtonsControl';
 import RokuContext from '../contexts/RokuContext';
 
 /* IPControl */
-const IPControl = () =>{
+const IPControl = (props) =>{
 
-    const rokuContext = useContext(RokuContext);
-
-    const [ipText, setIP ] = useState(rokuContext.ip );
+    const [ipText, setIP ] = useState(props.ip );
     let inputRef = useRef();
 
     const onSetButtonClicked = () =>{
         console.log('Calling onIPChanged with ip = ', ipText );
-        rokuContext.onIPChanged(ipText);
+        props.onIPChanged(ipText);
     };
 
     return(
@@ -30,20 +28,26 @@ const IPControl = () =>{
     );
 };
 
+const ShowConnectedStatus = (props) =>{
+    let msg = props.isConnected ? 'Connected':'No roku device found';
+    return (
+            <Text>{msg}</Text>
+)};
 
 /*
     MainController
 */
 const MainController = (props) =>{
-
+    const rokuContext = useContext(RokuContext);
 
     return (
         // buttonArrayRow: flexDirection:row, justifyContent:center
         <View style={styles.container}>
-            <IPControl />
+            <IPControl ip={rokuContext.ip} onIPChanged={rokuContext.onIPChanged}  />
+            <ShowConnectedStatus  isConnected={rokuContext.isConnected} />
             <NavButtonsControl />
         </View>
-    )
+    );
 };
 
 const styles = StyleSheet.create({

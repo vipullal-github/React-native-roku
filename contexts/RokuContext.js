@@ -7,8 +7,9 @@ const validKeyNames = ['Home','Up','Down','Left','Right','Back','Enter','Rev', '
 const defaultState = {
     ip:'192.168.10.117',
     port: 8060,
-    connectionChecked: false,
+    isConnected:false,
     isKeyDown:false,
+    sendKeyURL: undefined,
     currentKeyPressed: undefined,
     onIPChanged:() =>{},
     onSendKey:()=>{},
@@ -48,8 +49,10 @@ const createSetIPAction = (ip)=>{
 const createUpdateStatusAction = (x)=>{
     return {
         action: SET_CONNECTED_STATUS,
-        payload: x,
-    };
+        payload: {
+            isConnected: x,
+             },
+        };
 };
 
 
@@ -61,9 +64,8 @@ const doSetIP = (state,action) => {
     const newState = {
         ...state,
         ip:action.payload,
-        connectionChecked:false,
-    }
-    console.log('doSetIP: returning state: %o', newState);
+        isConnected: false,
+    };
     return newState;
 };
 
@@ -77,8 +79,8 @@ const doUpdateConnectedStatus = ( state, action )=>{
 
     return {
         ...state,
-        connectionChecked:action.payload,
-    }
+        isConnected: action.payload.isConnected,
+    };
 }
 
 
@@ -108,28 +110,22 @@ const rokuContextReducer = (state = defaultState, action) => {
 export const RokuContextProvider = (props)=>{
     const [state, dispatcher ] = useReducer( rokuContextReducer, defaultState );
 
-
-    const checkForIPChange = ( o ) => {
-        return o.checkRokuStatus;
-    };
-
-    const checkRokuStatus = async()=>{
-        console.log('RokuContextProvider.checkRokuStatus function called. Checking for roku at ' + state.ip );
-    };
-
-    //console.log('RokuContextProvider::State is %o', state );
-    useEffect(()=>{
-        console.log('RokuContextProvider.effect function called');
-        setTimeout( ()=>{
+    // check the connection.
+    useEffect(()=> {
+        let url = `http://${state.ip}:${state.port}/query/media-player`;
+        console.log(`sending request to ${url}`);
+        fetch(url).then( (response) => {
+            console.log('response is %o, status is %o ', response, response.status );
             dispatcher( createUpdateStatusAction(true));
-        }, 1000);
-    },[state.connectionChecked]);
+        })
+        .catch( e => console.log('Error!'));
+    },[state.ip, state.port]);
 
     
     const rokuContext = {
         ip: state.ip,
         port: state.port,
-        connectionChecked:state.connectionChecked,
+        isConnected: state.isConnected,
         isKeyDown:false,
         currentKeyPressed: undefined,
         keyNames: validKeyNames,
