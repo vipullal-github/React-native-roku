@@ -1,4 +1,4 @@
-import React, {createContext, useReducer, useEffect, useSelector } from 'react';
+import React, {createContext, useReducer, useEffect, } from 'react';
 
 
 const validKeyNames = ['Home','Up','Down','Left','Right','Back','Enter','Rev', 'Fwd','Play'];
@@ -70,9 +70,10 @@ const doSetIP = (state,action) => {
 };
 
 const doSendKey = (state,action) => {
-    console.log(`Sending key ${action.payload}`);
-    console.log('doSendKey::state is %o', state );
-    return state;
+    return{
+        ...state,
+        currentKeyPressed: action.payload,
+    }
 };
 
 const doUpdateConnectedStatus = ( state, action )=>{
@@ -120,6 +121,18 @@ export const RokuContextProvider = (props)=>{
         })
         .catch( e => console.log('Error!'));
     },[state.ip, state.port]);
+
+    // sending a key stroke
+    useEffect( ()=>{
+        let ck = state.currentKeyPressed;
+        // TODO: Validate the key here!
+        if( ck ){
+            let url = `http://${state.ip}:${state.port}/keypress/${ck}`;
+            console.log(`sending ${url}`);
+            fetch( url ).then(console.log('Key sent')).catch('error while sending keystroke');
+        }
+    },[state.currentKeyPressed, state.ip, state.port]);
+
 
     
     const rokuContext = {
