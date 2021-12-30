@@ -160,15 +160,16 @@ export const RokuContextProvider = (props)=>{
 
     // sending a String
     useEffect( ()=>{
-        let ck = state.stringToSend;
-        console.log(`sending string ${ck}`);
-        if( ck ){
-            
-            let url = `http://${state.ip}:${state.port}/keypress/${ck}`;
+        let str = state.stringToSend;
+        console.log(`sending string ${str}`);
+        if( str ){
             let params = {
                 method:'POST',
             };
-            console.log(`sending ${url}`);
+            let baseIP = `http://${state.ip}:${state.port}/keypress.Lit_`;
+            for (let i = 0; i < str.length; i++ ){
+                console.log( `${baseIP}${str[i]}`);
+            }
         }
     },[state.stringToSend, state.ip, state.port]);
     

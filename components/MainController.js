@@ -4,14 +4,13 @@ import NavButtonsControl from './NavButtonsControl';
 
 import RokuContext from '../contexts/RokuContext';
 
-/* IPControl */
+// ---------------------------------------------
 const IPControl = (props) =>{
 
     const [ipText, setIP ] = useState(props.ip );
     let inputRef = useRef();
 
     const onSetButtonClicked = () =>{
-        console.log('Calling onIPChanged with ip = ', ipText );
         props.onIPChanged(ipText);
     };
 
@@ -28,6 +27,8 @@ const IPControl = (props) =>{
     );
 };
 
+// ---------------------------------------------
+// TODO: Add a graphic here and move into the IPControl?
 const ShowConnectedStatus = (props) =>{
     let msg = props.isConnected ? 'Connected':'No roku device found';
     return (
@@ -35,18 +36,22 @@ const ShowConnectedStatus = (props) =>{
 )};
 
 
-const SendTextControl = () =>{
-    const [ipText, setIP ] = useState( '' );
+
+
+
+// ---------------------------------------------
+const SendTextControl = (props) =>{
+    const [text2send, setText ] = useState( '' );
     let inputRef = useRef();
 
     const onSetButtonClicked = () =>{
-        console.log('Calling sendText with text = ', ipText );
+        props.sendText(text2send);
     };
 
     return(
         <View style={styles.ipControlContainer}>
             <View style={styles.inputViewWrapper}>
-                <TextInput style={styles.inputStyle} value={ipText} onChangeText={setIP} placeholder={'Enter string to send'} ref={inputRef} />
+                <TextInput style={styles.inputStyle} value={text2send} onChangeText={setText} placeholder={'Enter string to send'} ref={inputRef} />
             </View>
         <View style={{paddingLeft:10}} />
         <Button style={styles.okBtnStyle} title="Send" onPress={onSetButtonClicked} />
@@ -67,7 +72,7 @@ const MainController = (props) =>{
             <IPControl ip={rokuContext.ip} onIPChanged={rokuContext.onIPChanged}  />
             <ShowConnectedStatus  isConnected={rokuContext.isConnected} />
             <NavButtonsControl />
-            <SendTextControl />
+            <SendTextControl sendText={rokuContext.onSendString} />
         </View>
     );
 };

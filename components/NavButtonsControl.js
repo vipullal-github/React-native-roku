@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
         flexDirection:'row',
         justifyContent:'space-evenly',
         alignContent:'center',
-        marginBottom:100,
+        marginBottom:50,
     },
     imageButtonStyle:{
         width:40,
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
     spacerView:{
         width:50,
         height:50,
-    }
+    },
 
 });
 export default NavButtonsControl;
