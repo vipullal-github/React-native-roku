@@ -16,7 +16,7 @@ const FakeAppBar = (props) =>{
 const styles = StyleSheet.create({
     container:{
         height:40,
-        backgroundColor:'green'
+        backgroundColor:'darkgreen',
     },
     titleBarStyle:{
         flex:1,

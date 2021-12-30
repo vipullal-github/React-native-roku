@@ -1,7 +1,9 @@
 import React, {createContext, useReducer, useEffect, } from 'react';
 
 
-const validKeyNames = ['Home','Up','Down','Left','Right','Back','Enter','Rev', 'Fwd','Play'];
+const validKeyNames = ['Home','Up','Down','Left','Right','Back','Enter','Rev', 'Fwd','Play','Select'];
+
+
 
 // default context data
 const defaultState = {
@@ -9,10 +11,11 @@ const defaultState = {
     port: 8060,
     isConnected:false,
     isKeyDown:false,
-    sendKeyURL: undefined,
     currentKeyPressed: undefined,
+    stringToSend:undefined,
     onIPChanged:() =>{},
     onSendKey:()=>{},
+    onSendString: ()=>{},
 };
 
 // -------------------------------------------
@@ -24,6 +27,7 @@ const RokuContext = createContext( defaultState );
 const SEND_KEY = 'SEND_KEY';
 const SET_IP = 'SET_IP';
 const SET_CONNECTED_STATUS = 'SET_STATUS';
+const SEND_STRING = 'SEND_STRING';
 
 
 // -----------------------------------------
@@ -56,6 +60,14 @@ const createUpdateStatusAction = (x)=>{
 };
 
 
+const createSendStringAction = (str) =>{
+    return {
+        action:SEND_STRING,
+        payload:str,
+    };
+};
+
+
 // ----------------------------------------------
 //      actions
 // ----------------------------------------------
@@ -82,7 +94,14 @@ const doUpdateConnectedStatus = ( state, action )=>{
         ...state,
         isConnected: action.payload.isConnected,
     };
-}
+};
+
+const doSendString = (state,action) =>{
+    return {
+        ...state,
+        stringToSend:action.payload,
+    };
+};
 
 
 // ------------------------------------------------
@@ -99,6 +118,9 @@ const rokuContextReducer = (state = defaultState, action) => {
     }
     else if( act === SET_CONNECTED_STATUS ){
         return doUpdateConnectedStatus( state, action);
+    }
+    else if (act === SEND_STRING ){
+        return doSendString(state,action);
     }
     console.log('rokuContextReducer called with unknown action!');
     return defaultState;
@@ -128,12 +150,27 @@ export const RokuContextProvider = (props)=>{
         // TODO: Validate the key here!
         if( ck ){
             let url = `http://${state.ip}:${state.port}/keypress/${ck}`;
+            let params = {
+                method:'POST',
+            };
             console.log(`sending ${url}`);
-            fetch( url ).then(console.log('Key sent')).catch('error while sending keystroke');
+            fetch( url, params ).then(console.log('Key sent')).catch('error while sending keystroke');
         }
     },[state.currentKeyPressed, state.ip, state.port]);
 
-
+    // sending a String
+    useEffect( ()=>{
+        let ck = state.stringToSend;
+        console.log(`sending string ${ck}`);
+        if( ck ){
+            
+            let url = `http://${state.ip}:${state.port}/keypress/${ck}`;
+            let params = {
+                method:'POST',
+            };
+            console.log(`sending ${url}`);
+        }
+    },[state.stringToSend, state.ip, state.port]);
     
     const rokuContext = {
         ip: state.ip,
@@ -141,10 +178,11 @@ export const RokuContextProvider = (props)=>{
         isConnected: state.isConnected,
         isKeyDown:false,
         currentKeyPressed: undefined,
-        keyNames: validKeyNames,
+        stringToSend:undefined,
         updateRokuConnectionStatus: (x) => { dispatcher( createUpdateStatusAction(x))},
         onIPChanged: (newIP) => { dispatcher( createSetIPAction(newIP));},
         onSendKey: (key) => { dispatcher( createSendKeyAction(key));},
+        onSendString: (str) =>{ dispatcher( createSendStringAction(str));},
     };
 
     return (

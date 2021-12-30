@@ -18,7 +18,7 @@ const IPControl = (props) =>{
     return(
         <View style={styles.ipControlContainer}>
             <View style={styles.inputViewWrapper}>
-                <TextInput style={styles.inputStyle} value={ipText} onChangeText={setIP} placeholder={'Enter IP address of the ROKU here'} ref={inputRef} />
+                <TextInput keyboardType='numeric' style={styles.inputStyle} value={ipText} onChangeText={setIP} placeholder={'Enter IP address of the ROKU here'} ref={inputRef} />
             </View>
         <View style={{paddingLeft:10}}></View>
         <Button style={styles.okBtnStyle} title="Set" onPress={onSetButtonClicked} />
@@ -34,6 +34,27 @@ const ShowConnectedStatus = (props) =>{
             <Text>{msg}</Text>
 )};
 
+
+const SendTextControl = () =>{
+    const [ipText, setIP ] = useState( '' );
+    let inputRef = useRef();
+
+    const onSetButtonClicked = () =>{
+        console.log('Calling sendText with text = ', ipText );
+    };
+
+    return(
+        <View style={styles.ipControlContainer}>
+            <View style={styles.inputViewWrapper}>
+                <TextInput style={styles.inputStyle} value={ipText} onChangeText={setIP} placeholder={'Enter string to send'} ref={inputRef} />
+            </View>
+        <View style={{paddingLeft:10}} />
+        <Button style={styles.okBtnStyle} title="Send" onPress={onSetButtonClicked} />
+        <View style={{paddingLeft:5}}></View>
+    </View>
+    )
+}
+
 /*
     MainController
 */
@@ -46,6 +67,7 @@ const MainController = (props) =>{
             <IPControl ip={rokuContext.ip} onIPChanged={rokuContext.onIPChanged}  />
             <ShowConnectedStatus  isConnected={rokuContext.isConnected} />
             <NavButtonsControl />
+            <SendTextControl />
         </View>
     );
 };
@@ -84,6 +106,12 @@ const styles = StyleSheet.create({
     imageButtonStyle:{
         flex:1,
 
-    }
+    },
+    textControl:{
+        flexDirection:'row',
+        padding:2,
+        backgroundColor:'lightgreen',
+        marginTop:2,
+    },
 });
 export default MainController;

@@ -14,6 +14,7 @@ const back_arrow_btn = require('../assets/back-arrow.png');
 const ff_btn = require('../assets/ff_btn.png');
 const pause_play_btn = require('../assets/pause_play_btn.png');
 const rewind_btn = require('../assets/rewind_btn.png');
+const select_btn = require('../assets/select_btn.png');
 // const rewind_arrow_btn = require('../asssets/rewind-arrow.png');
 
 
@@ -39,6 +40,7 @@ const NavButtonsControl = (props) =>{
             <View style={styles.navButtonRow}>
                 <ImageButton image={leftArrow} clickHandler={(e) => onPress(e,'Left')} />
                 <ImageButton image={ok_btn} clickHandler={(e) => onPress(e,'Enter')}/>
+                <ImageButton image={select_btn} clickHandler={(e) => onPress(e,'Select')} />
                 <ImageButton image={rightArrow} clickHandler={(e) => onPress(e,'Right')} />
             </View>
             <View style={styles.navButtonRow}>
@@ -60,7 +62,6 @@ const styles = StyleSheet.create({
     container:{
         flexDirection:'column',
         alignContent:'center',
-        height:200,
         //backgroundColor:'green',
     },
     navButtonRow:{
