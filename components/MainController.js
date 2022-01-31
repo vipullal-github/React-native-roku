@@ -44,8 +44,10 @@ const SendTextControl = (props) =>{
     const [text2send, setText ] = useState( '' );
     let inputRef = useRef();
 
-    const onSetButtonClicked = () =>{
-        props.sendText(text2send);
+    const onSendButtonClicked = () =>{
+        console.log("Sending text [" + text2send + "]");
+        props.sendTextFunc(text2send);
+        setText('');
     };
 
     return(
@@ -54,11 +56,11 @@ const SendTextControl = (props) =>{
                 <TextInput style={styles.inputStyle} value={text2send} onChangeText={setText} placeholder={'Enter string to send'} ref={inputRef} />
             </View>
         <View style={{paddingLeft:10}} />
-        <Button style={styles.okBtnStyle} title="Send" onPress={onSetButtonClicked} />
+        <Button style={styles.okBtnStyle} title="Send Text" onPress={onSendButtonClicked} />
         <View style={{paddingLeft:5}}></View>
     </View>
-    )
-}
+    );
+};
 
 /*
     MainController
@@ -72,7 +74,7 @@ const MainController = (props) =>{
             <IPControl ip={rokuContext.ip} onIPChanged={rokuContext.onIPChanged}  />
             <ShowConnectedStatus  isConnected={rokuContext.isConnected} />
             <NavButtonsControl />
-            <SendTextControl sendText={rokuContext.onSendString} />
+            <SendTextControl sendTextFunc={rokuContext.onSendString} />
         </View>
     );
 };

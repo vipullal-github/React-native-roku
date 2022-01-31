@@ -1,4 +1,4 @@
-import React, {createContext, useReducer, useEffect, } from 'react';
+import React, {createContext, useReducer, useEffect, useMemo, } from 'react';
 
 
 const validKeyNames = ['Home','Up','Down','Left','Right','Back','Enter','Rev', 'Fwd','Play','Select'];
@@ -25,6 +25,7 @@ const RokuContext = createContext( defaultState );
 
 
 const SEND_KEY = 'SEND_KEY';
+const RESET_KEY = 'RESET_KEY';
 const SET_IP = 'SET_IP';
 const SET_CONNECTED_STATUS = 'SET_STATUS';
 const SEND_STRING = 'SEND_STRING';
@@ -40,6 +41,13 @@ const createSendKeyAction = (key)=>{
     return {
         action:SEND_KEY,
         payload:idx,
+    };
+};
+
+const createResetKeyAction =() =>{
+    return {
+        action: RESET_KEY,
+        payload:undefined,
     };
 };
 
@@ -82,14 +90,20 @@ const doSetIP = (state,action) => {
 };
 
 const doSendKey = (state,action) => {
-    return{
+    return {
         ...state,
         currentKeyPressed: action.payload,
-    }
+    };
+};
+
+const doResetKey = (state, action) =>{
+    return {
+        ...state,
+        currentKeyPressed:undefined,
+    };
 };
 
 const doUpdateConnectedStatus = ( state, action )=>{
-
     return {
         ...state,
         isConnected: action.payload.isConnected,
@@ -122,9 +136,13 @@ const rokuContextReducer = (state = defaultState, action) => {
     else if (act === SEND_STRING ){
         return doSendString(state,action);
     }
+    else if (act == RESET_KEY ){
+        return doResetKey(state, action );
+    }
     console.log('rokuContextReducer called with unknown action!');
     return defaultState;
 };
+
 
 
 // -----------------------------------------------------
@@ -154,7 +172,8 @@ export const RokuContextProvider = (props)=>{
                 method:'POST',
             };
             console.log(`sending ${url}`);
-            fetch( url, params ).then(console.log('Key sent')).catch('error while sending keystroke');
+            fetch( url, params ).then(console.log('Key sent')).catch(console.log('error while sending keystroke'));
+            dispatcher( createResetKeyAction() );
         }
     },[state.currentKeyPressed, state.ip, state.port]);
 
@@ -168,7 +187,9 @@ export const RokuContextProvider = (props)=>{
             };
             let baseIP = `http://${state.ip}:${state.port}/keypress.Lit_`;
             for (let i = 0; i < str.length; i++ ){
-                console.log( `${baseIP}${str[i]}`);
+                let url = `${baseIP}${str[i]}`;
+                console.log( url );
+                fetch(url, params).then().catch(console.log('Error while sending string'));
             }
         }
     },[state.stringToSend, state.ip, state.port]);

@@ -24,7 +24,7 @@ const NavButtonsControl = (props) =>{
     const rokuContext = useContext( RokuContext );
 
     const onPress = (event, key)=>{
-        event.preventDefault();
+        //event.preventDefault();
         rokuContext.onSendKey( key );
     };
 

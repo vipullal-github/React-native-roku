@@ -1,5 +1,5 @@
 import React from 'react';
-import {TouchableHighlight,Image,StyleSheet} from 'react-native';
+import {TouchableHighlight,Image,StyleSheet, Pressable, useRef } from 'react-native';
 
 
 const ImageButton = (props) =>{
@@ -7,9 +7,9 @@ const ImageButton = (props) =>{
     let clickHandler = props.clickHandler;
     return (
         <>
-        <TouchableHighlight style={styles.imageButtonStyle} onPress={(e)=>clickHandler(e)} >
+        <Pressable style={styles.imageButtonStyle} onPress={(e)=>clickHandler(e)} >
             <Image source={image} style={styles.controllerButton} />
-        </TouchableHighlight>
+        </Pressable>
     </>
     );
 
